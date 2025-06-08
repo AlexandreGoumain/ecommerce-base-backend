@@ -18,6 +18,11 @@ const roleSchema = new Schema<IRole>({
     },
 });
 
+roleSchema.pre("save", async function (next) {
+    this.updatedAt = new Date();
+    next();
+});
+
 const Role = mongoose.model<IRole>("Role", roleSchema);
 
 export default Role;

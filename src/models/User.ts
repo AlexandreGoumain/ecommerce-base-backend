@@ -31,14 +31,18 @@ const userSchema = new Schema<IUser>({
         type: String,
         required: true,
     },
-    role: {
-        type: Schema.Types.ObjectId,
-        ref: "Role",
-        required: true,
-    },
+    role: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: "Role",
+            required: true,
+        },
+    ],
 });
 
 userSchema.pre("save", async function (next) {
+    this.updatedAt = new Date();
+
     if (!this.isModified("password")) {
         next();
     }
