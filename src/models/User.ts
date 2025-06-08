@@ -38,6 +38,14 @@ const userSchema = new Schema<IUser>({
             required: true,
         },
     ],
+    createdAt: {
+        type: Date,
+        default: Date.now,
+    },
+    updatedAt: {
+        type: Date,
+        default: Date.now,
+    },
 });
 
 userSchema.pre("save", async function (next) {

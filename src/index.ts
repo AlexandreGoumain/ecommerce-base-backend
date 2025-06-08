@@ -54,9 +54,14 @@ app.listen(port, () => {
 
 //
 //
-// [routing]
+// ----------------------------------------------------[routing]----------------------------------------------------
+//Auth
 app.use(authRouter);
+
+//User
 app.use("/users", authenticated, userRouter);
+
+//Role
 app.use("/roles", roleRouter);
 
 //
