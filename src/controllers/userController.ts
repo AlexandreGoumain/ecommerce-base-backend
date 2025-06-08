@@ -20,9 +20,19 @@ const updateUser = async (req: Request, res: Response) => {
     if (user) {
         const { firstName, lastName, email } = req.body;
 
-        await user.updateOne({ firstName, lastName, email });
+        user.firstName = firstName;
+        user.lastName = lastName;
+        user.email = email;
 
-        res.status(200).json({ message: "User updated successfully" });
+        await user.save();
+
+        res.status(200).json({
+            _id: user._id,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
+            role: user.role,
+        });
     } else {
         res.status(400);
     }
@@ -45,11 +55,12 @@ const updatePassword = async (req: Request, res: Response) => {
             res.status(400).json({ message: "Invalid old password" });
             return;
         } else {
-            await user.updateOne({ password: newPassword });
+            user.password = newPassword;
+            await user.save();
             res.status(200).json({ message: "Password updated successfully" });
         }
     } else {
-        res.status(400);
+        res.status(400).json({ message: "User not found" });
     }
 };
 
