@@ -17,6 +17,7 @@ const registerUser = async (req: Request, res: Response) => {
         email,
         password,
         role: "68457205b4615a2a3d458abb", // Default role ID
+        isActive: true,
     })) as IUser;
 
     if (user) {
@@ -27,6 +28,7 @@ const registerUser = async (req: Request, res: Response) => {
             lastName: user.lastName,
             email: user.email,
             role: user.role,
+            isActive: user.isActive,
         });
     } else {
         res.status(400).json({ message: "An error occurred" });
@@ -46,6 +48,7 @@ const authenticateUser = async (req: Request, res: Response) => {
             lastName: user.lastName,
             email: user.email,
             role: user.role,
+            isActive: user.isActive,
         });
     } else {
         res.status(401).json({
