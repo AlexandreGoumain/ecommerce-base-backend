@@ -1,14 +1,14 @@
 import bcrypt from "bcryptjs";
-import mongoose, { Document, Schema } from "mongoose";
-import { IRole } from "./Role";
+import mongoose, { Document, Schema, Types } from "mongoose";
 
 export interface IUser extends Document {
     firstName: string;
     lastName: string;
     email: string;
     password: string;
-    role: IRole;
+    role: Types.ObjectId[];
     isActive: boolean;
+    imageProfile: string;
     comparePassword(enteredPassword: string): Promise<boolean>;
     createdAt: Date;
     updatedAt: Date;
@@ -42,6 +42,10 @@ const userSchema = new Schema<IUser>({
     isActive: {
         type: Boolean,
         default: true,
+    },
+    imageProfile: {
+        type: String,
+        default: "",
     },
     createdAt: {
         type: Date,

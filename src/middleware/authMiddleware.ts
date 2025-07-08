@@ -1,8 +1,10 @@
 import { NextFunction, Request, Response } from "express";
 import asyncHandler from "express-async-handler";
 import jwt, { JwtPayload } from "jsonwebtoken";
+import { Types } from "mongoose";
+
 import { UserBasicInfo } from "..";
-import User from "../models/User";
+import User, { IUser } from "../models/User";
 import { AuthenticationError } from "./errorMiddleware";
 
 const authenticated = asyncHandler(
@@ -41,4 +43,15 @@ const authenticated = asyncHandler(
     }
 );
 
-export { authenticated };
+const isAdmin = asyncHandler(
+    async (req: Request, res: Response, next: NextFunction) => {
+        const user = req.user as IUser;
+        if (user.role.includes(new Types.ObjectId(process.env.ADMIN_ROLE_ID))) {
+            next();
+        } else {
+            res.status(401);
+            throw new AuthenticationError("User not authorized");
+        }
+    }
+);
+export { authenticated, isAdmin };

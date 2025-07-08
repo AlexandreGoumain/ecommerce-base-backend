@@ -1,9 +1,10 @@
 import { Request, Response } from "express";
+import { Types } from "mongoose";
 import User, { IUser } from "../models/User";
 import { clearToken, generateToken } from "../utils/auth";
 
 const registerUser = async (req: Request, res: Response) => {
-    const { firstName, lastName, email, password } = req.body;
+    const { firstName, lastName, email, password, imageProfile } = req.body;
 
     const userExists = await User.findOne({ email });
 
@@ -16,8 +17,9 @@ const registerUser = async (req: Request, res: Response) => {
         lastName,
         email,
         password,
-        role: "68457205b4615a2a3d458abb", // Default role ID
+        role: [new Types.ObjectId(process.env.DEFAULT_ROLE_ID)],
         isActive: true,
+        imageProfile: imageProfile || "",
     })) as IUser;
 
     if (user) {
@@ -29,6 +31,7 @@ const registerUser = async (req: Request, res: Response) => {
             email: user.email,
             role: user.role,
             isActive: user.isActive,
+            imageProfile: user.imageProfile,
         });
     } else {
         res.status(400).json({ message: "An error occurred" });
@@ -49,10 +52,11 @@ const authenticateUser = async (req: Request, res: Response) => {
             email: user.email,
             role: user.role,
             isActive: user.isActive,
+            imageProfile: user.imageProfile,
         });
     } else {
         res.status(401).json({
-            message: "User not found or invalid credentials",
+            message: "Mauvais identifiants, veuillez réessayer",
         });
     }
 };

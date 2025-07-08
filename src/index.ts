@@ -56,7 +56,7 @@ app.listen(port, () => {
 //
 // ----------------------------------------------------[routing]----------------------------------------------------
 //Auth
-app.use(authRouter);
+app.use("/auth", authRouter);
 
 //User
 app.use("/users", authenticated, userRouter);

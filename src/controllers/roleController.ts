@@ -22,8 +22,8 @@ const registerRole = async (req: Request, res: Response) => {
     if (role) {
         res.status(201).json({
             _id: role._id,
-            title: role.title,
-            description: role.description,
+            title: role.title.trim(),
+            description: role.description.trim(),
         });
     } else {
         res.status(400).json({ message: "An error occurred" });
